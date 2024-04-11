@@ -1,1 +1,54 @@
 /* Calculator style */
+#calc-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0px;
+    display: flex;
+    flex-wrap: wrap;
+}
+#buttons{
+    width: 40%;
+    height: auto;
+    margin-top: 0px;  
+}
+
+#display{
+    margin-top: 2%;
+    width: 40%;
+    font-size: 5em;
+    text-align: right;
+}
+
+.digit, .op {
+    width: 25%;
+    height: auto;
+}
+.digit-button, .op-button, .equals-button{
+    font-size: 3em;
+    width: 100%;
+    height: 3em;
+}
+.equals{
+    width: 100%;
+    height: auto;
+}
+.equals-button{
+    background-color: rgb(135, 227, 135);
+    color: rgb(255, 255, 255);
+}
+
+
+.op-button{
+    background-color: orange;
+    color: white;
+}
+.digit-button, #display{
+    color: white;
+    background-color: rgb(33, 37, 41)
+}
+

@@ -24,28 +24,29 @@ ul {
     text-align: right;
 }
 
-.digit, .op {
+.digit, .op, .clear {
     width: 25%;
     height: auto;
 }
-.digit-button, .op-button, .equals-button{
-    font-size: 3em;
-    width: 100%;
-    height: 3em;
-}
+
 .equals{
     width: 100%;
     height: auto;
 }
+
+.btn{
+    font-size: 3em;
+    width: 100%;
+    height: 3em;
+}
+
+.op-button, .clear-button{
+    background-color: orange;
+    color: white;
+}
 .equals-button{
     background-color: rgb(135, 227, 135);
     color: rgb(255, 255, 255);
-}
-
-
-.op-button{
-    background-color: orange;
-    color: white;
 }
 .digit-button, #display{
     color: white;

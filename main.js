@@ -7,7 +7,6 @@ display.textContent = "0";
 generateDisplay();
 
 
-
 function generateDisplay() {
     let isNewNum = true;
     //Generate numbers in display on user click
@@ -17,9 +16,33 @@ function generateDisplay() {
             display.textContent = isNewNum ? (() => 
             {   display.textContent = 0;
                 isNewNum = false;
-                return parseInt(display.textContent.concat(event.target.textContent)) 
+                return event.target.textContent; 
             })()
-                : parseInt(display.textContent.concat(event.target.textContent));    
+                : (() => 
+                {
+                    if ((event.target.textContent === '.' && display.textContent.indexOf('.') > -1) || (event.target.textContent === '.' && display.textContent.indexOf('e') > -1)){
+                        return;
+                    }
+                    else if (event.target.textContent === '.' && display.textContent.indexOf('.') === -1 && display.textContent.indexOf('e') === -1) {
+                        return display.textContent.concat(event.target.textContent);
+                    }
+                    else if (event.target.textContent !== '.' && display.textContent.indexOf('e') === -1) {
+                        let newNum = display.textContent.concat(event.target.textContent);
+                        if (newNum.length > 19 && newNum.indexOf('.') > -1) {
+                            return parseFloat(newNum).toFixed((19 - (newNum.length - (newNum.slice((newNum.indexOf('.') + 1)).length)))).toString();
+                        }
+                        else if (newNum.length > 19 && newNum.indexOf('.') === -1) {
+                            return parseFloat(newNum).toExponential(2);
+                        }
+                        else {
+                            return newNum;
+                        }
+                    }
+                    else if (event.target.textContent !== '.' && display.textContent.indexOf('e') > -1) {
+                        return parseFloat((parseFloat(display.textContent).toString()).concat(event.target.textContent)).toExponential(2);
+                    }
+                })();
+                    
         });
     });
     //Store first number value and operator value on user click for use in calulator functions
@@ -28,35 +51,26 @@ function generateDisplay() {
         op.addEventListener('click', (event) => {
             //assign operator and first operand
             if (operator === undefined && firstNum === undefined && secondNum === undefined) {
-                firstNum = parseInt(display.textContent);
+                firstNum = parseFloat(display.textContent);
                 operator = event.target.textContent;
                 isNewNum = true; 
             }
             //Account for condition when user wants to change operator
-            else if (operator !== undefined && firstNum !== undefined && secondNum === undefined && isNewNum) {
+            else if (operator !== undefined && firstNum !== undefined && isNewNum) {
                 operator = event.target.textContent;
             }
             //Account for successive use of operator w/o equal sign
-            else if (operator !== undefined && firstNum !== undefined && secondNum === undefined && !isNewNum) {
-                secondNum = parseInt(display.textContent);
-
-                display.textContent = operate(firstNum, operator, secondNum);
-
-                firstNum = parseInt(display.textContent);
-                operator = event.target.textContent;
-                secondNum = undefined;
-                isNewNum = true;
-            }
-            //Account for all variables having values due to previously using full operation and equal sign
-            else if (operator !== undefined && firstNum !== undefined && secondNum !== undefined && isNewNum) {
-                operator = event.target.textContent;
-            }
-            else if (operator !== undefined && firstNum !== undefined && secondNum !== undefined && !isNewNum) {
-                secondNum = parseInt(display.textContent);
+            else if (operator !== undefined && firstNum !== undefined && !isNewNum) {
+                secondNum = parseFloat(display.textContent);
+                if (operator === '/' && secondNum === 0)
+                {
+                    display.textContent = `Can't divide by 0!`;
+                    return;
+                }
                 
                 display.textContent = operate(firstNum, operator, secondNum);
 
-                firstNum = parseInt(display.textContent);
+                firstNum = parseFloat(display.textContent);
                 operator = event.target.textContent;
                 secondNum = undefined;
                 isNewNum = true;
@@ -67,13 +81,19 @@ function generateDisplay() {
     let equals = document.querySelector(".equals-button")
     equals.addEventListener('click', () => {
         if (firstNum !== undefined && secondNum === undefined) {
-            secondNum = parseInt(display.textContent);
+            secondNum = parseFloat(display.textContent);
         };
         
         if (firstNum !== undefined && operator !== undefined && secondNum !== undefined) {
+            if (operator === '/' && secondNum === 0)
+            {
+                display.textContent = `Can't divide by 0!`;
+            }
+            else {
             display.textContent = operate(firstNum, operator, secondNum);
-            firstNum = parseInt(display.textContent);
+            firstNum = parseFloat(display.textContent);
             isNewNum = true;
+            }
         };
     });
 
@@ -83,6 +103,7 @@ function generateDisplay() {
         secondNum = undefined;
         operator = undefined;
         display.textContent = "0";
+        isNewNum = true;
     });
 };
 

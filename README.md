@@ -1,1 +1,1 @@
-# odin-calculator
+This project demonstrates my ability to create html elements and style them with css to create the appearance and display of a calculator. It also demonstrates my ability to use javascript functions and programming logic to generate the display of the calculator based on user input, utilizing event listeners and conditional clauses to calculate expressions defined by user input.
